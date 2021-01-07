@@ -5,10 +5,10 @@
 // ROS::Publisher motor commands;
 ros::Publisher motor_command_publisher;
 
-class SubscribeAndPublish
+class DriveToTarget
 {
 public:
-  SubscribeAndPublish()
+  DriveToTarget()
   {
     // Inform ROS master that we will be publishing a message of type geometry_msgs::Twist on the robot actuation topic with a publishing queue size of 10
     motor_command_publisher_ = n_.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
@@ -17,7 +17,7 @@ public:
   // Define a drive /ball_chaser/command_robot service with a handle_drive_request callback function
   ros::ServiceServer get_service()
   {
-    ros::ServiceServer service = n_.advertiseService("/ball_chaser/command_robot", &SubscribeAndPublish::handle_drive_request, this);
+    ros::ServiceServer service = n_.advertiseService("/ball_chaser/command_robot", &DriveToTarget::handle_drive_request, this);
     return service;
   }
 
@@ -49,15 +49,15 @@ private:
   ros::NodeHandle n_; 
   ros::Publisher motor_command_publisher_;
 
-};//End of class SubscribeAndPublish
+};//End of class DriveToTarget
 
 int main(int argc, char **argv)
 {
     //Initiate ROS
     ros::init(argc, argv, "drive_bot");
 
-    //Create an object of class SubscribeAndPublish that will take care of everything
-    SubscribeAndPublish SAPObject;
+    //Create an object of class DriveToTarget that will take care of everything
+    DriveToTarget SAPObject;
 
     ros::ServiceServer service = SAPObject.get_service();
 
