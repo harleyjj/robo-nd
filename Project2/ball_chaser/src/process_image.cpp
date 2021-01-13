@@ -20,11 +20,12 @@ public:
 
     int white_pixel = 255;
     int pixel_location = -1;
-    float lin_x, ang_z = 0;
+    float lin_x = 0.0;
+    float ang_z = 0.0;
     
     // Loop through each pixel in the image and check if there's a bright white one
-    for (int i = 0; i < img.height * img.step; i++) {
-        if (img.data[i] == white_pixel) {
+    for (int i = 0; i < (img.height * img.step) - 2; i++) {
+        if (img.data[i] == white_pixel && img.data[i + 1] == white_pixel && img.data[i + 2] == white_pixel) {
             pixel_location = i;
             break;
         }
@@ -43,7 +44,7 @@ public:
 	else
 	    ang_z = -0.5;	
     }
-    // Pass lin_x and ang_z values to drive_robot_ (default is 0,0)
+    // Pass lin_x and ang_z values to drive_robot_ (default is 0,0 which should stop robot if no white pixel detected)
     drive_robot_(lin_x, ang_z);
   }
 
